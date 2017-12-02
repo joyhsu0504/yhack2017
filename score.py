@@ -1,16 +1,9 @@
 #!/usr/bin/python
-
-# find highest final score
-# find every flight that leads to destination
-# check if closest airport is within 50 miles
-# else connecting flight
-# else error
+from math import cos, asin, sqrt
 import pandas as pd
 def main():
 	labels_df = pd.read_csv("Deals.csv")
 	cols = ["BatchId", "OriginAirportCode", "DestinationAirportCode", "FlightDate", "FlightType", "FareType", "FinalScore", "FareDollarAmount", "TaxDollarAmount", "FarePointsAmount", "TaxPointsAmount", "IsDomesticRoute", "IsHotDeal", "IsPriceDrop", "PriceDropFromDollarAmount", "LastDayOfFare", "DaysOfWeek", "IsNewPriceDrop"]
-	#for label in cols:
-	#	labels_df[label] = labels_df['tags'].apply(lambda x: 1 if label in x.split(' ') else 0)
 		
 	dropCols = [0, 3, 11, 12, 13, 14, 15, 16, 17]
 	for dropCol in dropCols:
@@ -18,20 +11,47 @@ def main():
 		
 	print labels_df
 	
-	highestScore(labels_df)
-	returnAirports(labels_df, "LAX")
+	labels_df = returnAirports(labels_df, "LAX")
+	originAirports = labels_df.loc[1].values
+	closestAirport = findClosestAirport(originAirports, currLocationLat, currLocationLon) #change currLoc
+	lables_df = findMatch("LAX", closestAirport)
+	labels_df = highestScore(labels_df)
 
-    #labels_df = labels_df.drop(labels_df.index[errors])
+def findCoordinate(locName):
+	code_df = pd.read_csv("airportcodes.csv")
+	code_df = code_df.loc[labels_df['locationID'] == locName]
+	return labels_df.loc[1].values, labels_df.loc[2].values
+	
+def findDistance(lat1, lon1, lat2, lon2):
+	p = 0.017453292519943295     #Pi/180
+	a = 0.5 - cos((lat2 - lat1) * p)/2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2
+	return 12742 * asin(sqrt(a)) #2*R*asin
 
-	#labels_df = labels_df[cols]
+def findMatch(labels_df, originCode, destinationCode):
+	labels_df = labels_df.loc[labels_df['DestinationAirportCode'] == destinationCode]
+	labels_df = labels_df.loc[labels_df['OriginAirportCode'] == originCode]
+	return labels_df
 
-	#y_train = labels_df.values
+def findClosestAirport(allLoc, currLocationLat, currLocationLon):
+	lat1, lon1 = findCoordinate(allLoc[0])
+	closestDistance = findDistance(lat1, lon1, currLocationLat, currLocationLon)
+	closestAirport = allLoc[0]
+	for i in range(1, len(allLoc)):
+		lat1, lon1 = findCoordinate(allLoc[i])
+		currDistance = findDistance(lat1, lon1, currLocationLat, currLocationLon)
+		if (currDistance < closestDistance):
+			closestDistance = currDistance
+			closestAirport = allLoc[0]
+	return closestAirport
+	
 
 def returnAirports(labels_df, destinationCode):
 	print labels_df.loc[labels_df['DestinationAirportCode'] == destinationCode]
+	return labels_df.loc[labels_df['DestinationAirportCode'] == destinationCode]
 
 def highestScore(labels_df):
 	print labels_df.loc[labels_df['FinalScore'].idxmax()]
+	return labels_df.loc[labels_df['FinalScore'].idxmax()]
 
 if __name__ == '__main__':
 	main()
