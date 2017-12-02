@@ -12,15 +12,20 @@ def main():
 	print labels_df
 	
 	labels_df = returnAirports(labels_df, "LAX")
-	originAirports = labels_df.loc[1].values
-	closestAirport = findClosestAirport(originAirports, currLocationLat, currLocationLon) #change currLoc
-	lables_df = findMatch("LAX", closestAirport)
+	print 'new labels'
+	print labels_df
+	#originAirports = labels_df.loc[[1]].values
+	originAirports = labels_df['OriginAirportCode'].values
+	print 'origin airports' + originAirports
+	closestAirport = findClosestAirport(originAirports, 60, 160) #change currLoc
+	print 'closest airport' + closestAirport
+	lables_df = findMatch(labels_df, "LAX", closestAirport)
 	labels_df = highestScore(labels_df)
 
 def findCoordinate(locName):
 	code_df = pd.read_csv("airportcodes.csv")
-	code_df = code_df.loc[labels_df['locationID'] == locName]
-	return labels_df.loc[1].values, labels_df.loc[2].values
+	code_df = code_df.loc[code_df['locationID'] == locName]
+	return code_df['Latitude'].values, code_df['Longitude'].values
 	
 def findDistance(lat1, lon1, lat2, lon2):
 	p = 0.017453292519943295     #Pi/180
