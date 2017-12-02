@@ -1,0 +1,61 @@
+/*!
+ * mimodal - https://draggable.github.io/mimodal
+ * Version: 0.0.5
+ * Author: Kevin Chappell
+ */
+
+html, body {position: relative}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+button {
+  border: 0;
+  color: white;
+  font-size: 20px;
+  height: 50px;
+  margin: 5px;
+  width: 80%;
+  background-color: #4caf50;
+}
+
+#dialog {
+  display: none;
+  left: 30px;
+  top: 30px;
+  padding: 20px;
+  background-color: white;
+  -webkit-box-shadow: 10px 10px 36px -8px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 36px -8px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 36px -8px rgba(0,0,0,0.75);
+  z-index: 10000;
+}
+
+#pn {
+  width: 80%;
+  margin-bottom: 15px;
+}
+
+.instr {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 18px;
+}
+
+.Title {
+  font-size: 24px;
+  margin: 5px;
+}
+
+.ui-dialog {
+  -webkit-box-shadow: 10px 10px 36px -8px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 36px -8px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 36px -8px rgba(0,0,0,0.75);
+  padding: 20px;
+  z-index: 10000;
+}

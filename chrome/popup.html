@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <script src="popup.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Palanquin" rel="stylesheet">
+    <style>
+body {
+  width: 200px;
+  background-color: #fefefe;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  border: 0;
+  color: white;
+  font-size: 20px;
+  height: 50px;
+  margin: 5px;
+  width: 95%;
+}
+
+.Title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 18px;
+  margin: 5px;
+}
+
+.instr {
+  font-family: 'Palanquin', sans-serif;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.bar {
+  margin-top: 2.5px;
+  height: 1px;
+  width: 80%;
+  background-color: #212121;
+}
+
+.bordered {
+  border: 5px solid red;
+}
+
+.start {
+   background-color: #4caf50;
+}
+
+.end {
+  background-color: red;
+}
+
+.stop {
+  height: 0px;
+  width: 0px;
+}
+
+.favicon {
+  background-image: url('./faviconSentinel.png');
+  background-size: cover;
+  height: 100px;
+  width: 100px;
+  margin: 20px;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class = "favicon"></div>
+    <h2 class = "Title">Sentinel</h2>
+    <button class="start">Select Content</button>
+    <button class="end">Disable Selector</button>
+    <p class = "instr">Instructions</p>
+    <div class = "bar"></div>
+    <p class = "instr">1. Click 'Select Content' to activate service</p>
+    <p class = "instr">2. Click on desired content on Web page</p>
+    <p class = "instr">3. Input phone number to receive SMS</p>
+    <p class = "instr">4. Click 'Watch' to begin watching content</p>
+    <p class = "instr">5. Click 'Disable Selector' to stop selecting</p>
+  </body>
+</html>
