@@ -1,0 +1,26 @@
+{
+  "name": "Immersion",
+  "version": "1.0",
+  "description": "Google Chrome Extension that allows user to define a set of words which will be replaced with translations to a chosen language.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["page.js"],
+      "css": ["translation.css"]
+    }
+  ],
+  "permissions": [
+    "<all_urls>"
+  ],
+  "browser_action": {
+  "default_title": "Immersion",
+  "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": {
+    "128": "ImmerseFavicon.png"
+  },
+  "manifest_version": 2
+}

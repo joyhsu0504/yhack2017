@@ -1,0 +1,21 @@
+{
+  "name": "Immerse",
+  "version": "1.0.0",
+  "description": "Google Chrome Extension that allows user to define a set of words which will be replaced with translations to a chosen language.",
+  "main": "server.js",
+  "engines": {
+    "node": "7x"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "gsa-sheets": "^1.0.2",
+    "node-fetch": "^1.7.3"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jason Zheng",
+  "license": "MIT"
+}
