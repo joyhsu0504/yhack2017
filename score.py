@@ -2,6 +2,12 @@
 from math import cos, asin, sqrt
 import pandas as pd
 def main():
+	currTags = ["skyscraper", "city"] #need image tag
+	targetAirport = str(getAirport(currTags))
+	print targetAirport
+	print getDeal(targetAirport, 60, 160) #need curr location
+
+def getDeal(targetAirport, lat, lon):
 	labels_df = pd.read_csv("Deals.csv")
 	cols = ["BatchId", "OriginAirportCode", "DestinationAirportCode", "FlightDate", "FlightType", "FareType", "FinalScore", "FareDollarAmount", "TaxDollarAmount", "FarePointsAmount", "TaxPointsAmount", "IsDomesticRoute", "IsHotDeal", "IsPriceDrop", "PriceDropFromDollarAmount", "LastDayOfFare", "DaysOfWeek", "IsNewPriceDrop"]
 		
@@ -9,18 +15,38 @@ def main():
 	for dropCol in dropCols:
 		labels_df = labels_df.drop(cols[dropCol], axis=1)
 		
-	print labels_df
+	#print labels_df
 	
-	labels_df = returnAirports(labels_df, "LAX")
-	print 'new labels'
-	print labels_df
-	#originAirports = labels_df.loc[[1]].values
+	labels_df = returnAirports(labels_df, targetAirport)
+	#print 'new labels '
+	#print labels_df
 	originAirports = labels_df['OriginAirportCode'].values
-	print 'origin airports' + originAirports
-	closestAirport = findClosestAirport(originAirports, 60, 160) #change currLoc
-	print 'closest airport' + closestAirport
-	lables_df = findMatch(labels_df, "LAX", closestAirport)
+	#print 'origin airports ' + originAirports
+	closestAirport = findClosestAirport(originAirports, lat, lon)
+	#print 'closest airport ' + closestAirport
+	lables_df = findMatch(labels_df, targetAirport, closestAirport)
 	labels_df = highestScore(labels_df)
+	return labels_df
+
+def getAirport(currTags):
+	airport_df = pd.read_csv("airportEntities.csv")
+	highestMatchCount = 0
+	highestMatchAirport = ''
+	for index, row in airport_df.iterrows():
+		airportTagsStr = row['entities']
+		airportTags = airportTagsStr.split(", ")   
+		tagCount = getMatchingTagCount(currTags, airportTags)
+		if (tagCount > highestMatchCount):
+			highestMatchCount = tagCount
+			highestMatchAirport = index
+	return airport_df.iloc[[highestMatchAirport]]['airport code'].values[0]
+	
+def getMatchingTagCount(currTags, airportTags):
+	count = 0
+	for airportTag in airportTags:
+		if airportTag in currTags:
+			count += 1
+	return count
 
 def findCoordinate(locName):
 	code_df = pd.read_csv("airportcodes.csv")
@@ -51,11 +77,11 @@ def findClosestAirport(allLoc, currLocationLat, currLocationLon):
 	
 
 def returnAirports(labels_df, destinationCode):
-	print labels_df.loc[labels_df['DestinationAirportCode'] == destinationCode]
+	#print labels_df.loc[labels_df['DestinationAirportCode'] == destinationCode]
 	return labels_df.loc[labels_df['DestinationAirportCode'] == destinationCode]
 
 def highestScore(labels_df):
-	print labels_df.loc[labels_df['FinalScore'].idxmax()]
+	#print labels_df.loc[labels_df['FinalScore'].idxmax()]
 	return labels_df.loc[labels_df['FinalScore'].idxmax()]
 
 if __name__ == '__main__':
