@@ -1,3 +1,25 @@
+'use strict'
+
+const express = require('express')
+const bodyParser = require('body-parser')
+const request = require('request')
+const savePixels = require("save-pixels")
+const app = express()
+const http = require('http')
+const fs = require('fs')
+const path = require('path')
+const mongo = require("mongodb");
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
+
+const MongoClient = mongo.MongoClient;
+var feedbackBoolean = false
+var bothBoolean = false
+var lastSeenFood = ""
+
+var imageSearch = require('node-google-image-search');
+
+
 function processImage(sender, imageURL) {
 	const filepath = path.join(process.cwd(),'temp/' + 'download.jpg');
 	var post = function(imageURL, callback) {
