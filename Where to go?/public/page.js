@@ -9,6 +9,9 @@ var currNode1 = "";
 var latitude = "";
 var longitude = "";
 
+document.addEventListener("DOMContentLoaded", function(event) {
+  setLatLong(); //TODO CHANGE TO SETLATLONG etc
+});
 var bubbleDOM = document.createElement('div');
 bubbleDOM.setAttribute('class', 'selection_bubble');
 document.body.appendChild(bubbleDOM);
@@ -34,7 +37,8 @@ function renderBubble(mouseX, mouseY, selection, language) {
 async function onMessage(message) {
   const active = message;
   if (active) {
-    setLatLong(); //TODO PERSISTENT TOGGLE
+    //setLatLong(); //TODO PERSISTENT TOGGLE
+    //doIt();
   }
   else {
     console.log('inactive');
@@ -45,7 +49,7 @@ async function setLatLong() {
   navigator.geolocation.getCurrentPosition(function(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
-    doIt(); //TODO IDEALLY DO DO IT AND THAT SEPERATELY WITH SETLATLONG HAPPENING ON PAGE LOAD
+    //doIt(); //TODO IDEALLY DO DO IT AND THAT SEPERATELY WITH SETLATLONG HAPPENING ON PAGE LOAD
   });
 }
 
@@ -90,6 +94,7 @@ function createInteractiveImageModal(newNode1) {
   });
   newNode1.addEventListener('click', function (event) {
     event.stopPropagation();
+    event.preventDefault();
     if (currNode1 != "" ) currNode1.classList.remove('highlighted2');
     newNode1.classList.add('highlighted2');
     currNode1 = newNode1;
@@ -100,13 +105,13 @@ function createInteractiveImageModal(newNode1) {
 function returnImages(node) {
   if (node.nodeType == Node.ELEMENT_NODE) {
     if (node.nodeName == "IMG") { //background image css, background css, src
-      createInteractiveImageModal(node);
       queryBackend(node.src); //not sure if it works
+      createInteractiveImageModal(node);
     }
     else if (node.nodeName == "DIV") {
       if (node.style.backgroundImage != 'none' && node.style.backgroundImage != "") {
-        createInteractiveImageModal(node);
         queryBackend(node.style.backgroundImage);
+        createInteractiveImageModal(node);
       }
     }
   }
