@@ -6,7 +6,8 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 var initiate = true;
 var currNode1 = "";
-//this.finish = this.finish.bind(this);
+var latitude = "";
+var longitude = "";
 
 var bubbleDOM = document.createElement('div');
 bubbleDOM.setAttribute('class', 'selection_bubble');
@@ -33,28 +34,24 @@ function renderBubble(mouseX, mouseY, selection, language) {
 async function onMessage(message) {
   const active = message;
   if (active) {
-    doIt();
+    setLatLong(); //TODO PERSISTENT TOGGLE
   }
   else {
     console.log('inactive');
   }
 }
 
+async function setLatLong() {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+    doIt(); //TODO IDEALLY DO DO IT AND THAT SEPERATELY WITH SETLATLONG HAPPENING ON PAGE LOAD
+  });
+}
+
+
 async function doIt() {
-  //const word = new RegExp('\\b' + deckArray[i] + '\\b', "g"); //make it so if the word is an article like "the", find the word following
-  //const translationQuery = await fetch('http://localhost:3000/getTranslation/' + encodeURIComponent(msg[1]) + '/' + encodeURIComponent(deckArray[i])); //current functionality for spanish
-  //const translationJson = await translationQuery.json(); //THE FIX IS MAKE A SERVER WITH HTTPS THATS IT, ALSO CREATE A CATCH ^
-  /*if (Object.values(translationJson) == 'success') {
-    const translationFinish = await fetch('http://localhost:3000/finishTranslation/' + encodeURIComponent(deckArray[i]));
-    const finishJson = await translationFinish.json();
-    const translationTemp = Object.values(finishJson);
-    const translation = translationTemp[1]; //obviously this doesnt scale well
-    const traverse = await traversePage(document.querySelector('body'), word, msg[1], translation, deckArray[i]);
-    if (i == deckArray.length - 1) {
-      const endIt = await finish();
-    }
-  }*/
-  const traverse = await returnImages(document.querySelector('body'));
+  await returnImages(document.querySelector('body'));
 }
 
 function getOffset(el) {
@@ -65,23 +62,23 @@ function getOffset(el) {
   }
 }
 
-function getLocation() { //only works on https due to nature of geolocation api
-
-  return 
-}
-
 async function queryBackend(imageURL) {
-  console.log("got an image with URL: " + imageURL);
-  //const currLocation = getLocation();
-  //throw an error if it failed
   const jsonObject = {
-    latitude: 'Latitude',
-    longitude: 'Longitude',
+    latitude: latitude,
+    longitude: longitude,
     image: imageURL
   };
-  //const sendLocationAndImage = await fetch('');
-  //const finishSending = await sendLocationAndImage.json(); //to continue...
-
+  const request = {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: JSON.stringify(jsonObject)
+  };
+  console.log(jsonObject);
+  //const sendLocationAndImage = await fetch('/travelInfo/', request); //sends the image and coords //TODO populate the URL
+  //const finishSending = await sendLocationAndImage.json(); //gets back json with origin airport etc.
 }
 
 function createInteractiveImageModal(newNode1) {
@@ -105,13 +102,11 @@ function returnImages(node) {
     if (node.nodeName == "IMG") { //background image css, background css, src
       createInteractiveImageModal(node);
       queryBackend(node.src); //not sure if it works
-      console.log("found an image node called: " + node);
     }
     else if (node.nodeName == "DIV") {
-      if (node.style.backgroundImage != 'none') {
+      if (node.style.backgroundImage != 'none' && node.style.backgroundImage != "") {
         createInteractiveImageModal(node);
         queryBackend(node.style.backgroundImage);
-        console.log('There is a background image' + node);
       }
     }
   }
