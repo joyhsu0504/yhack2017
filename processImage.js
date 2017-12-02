@@ -3,93 +3,122 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const savePixels = require("save-pixels")
 const app = express()
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
-const mongo = require("mongodb");
-var async = require('asyncawait/async');
-var await = require('asyncawait/await');
+var csv = require('csv');
 
-const MongoClient = mongo.MongoClient;
 var feedbackBoolean = false
 var bothBoolean = false
 var lastSeenFood = ""
 
-var imageSearch = require('node-google-image-search');
-
-
-function processImage(sender, imageURL) {
-	const filepath = path.join(process.cwd(),'temp/' + 'download.jpg');
-	var post = function(imageURL, callback) {
-		request(imageURL, {encoding: 'base64'}, function(error, response, body) {
-			fs.writeFileSync(filepath, body, 'base64', function (err) {});
-			console.log("downloaded")
-			var imageFile = fs.readFileSync(filepath)
-			var encoded = new Buffer(imageFile).toString('base64')
-			callback(encoded)
-		});
-
-	}
-
-	post(imageURL, function(result) {
-		const messageBody = {
-		"requests":[
-		    {
-		      "image":{
-		        "content": result
-		      },
-		      "features":[
-		        {
-		          "type":"WEB_DETECTION",
-		          "maxResults":10
-		        }
-		      ]
-		    }]
-		}
-		request({
-			method: 'POST',
-			url: 'https://vision.googleapis.com/v1/images:annotate',
-			qs: {key: 'AIzaSyCGjy-IGHkLr1NAkunfshfX486rZxu9CCg'},
-			body: JSON.stringify(messageBody)
-		}, function(error, response, body) {
-			if (error) {
-				console.log('error requesting classification: ', error)
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error)
-			} else {
-				const responseObj = JSON.parse(body);
-				let azureMessageBody = {"url": imageURL}
-				request({
-					method: 'POST',
-					url: 'https://westus.api.cognitive.microsoft.com/vision/v1.0/tag',
-					headers:{
-						'content_type':'application/json',
-						'Ocp-Apim-Subscription-Key':'0a6a9cad20ff454691e5f73137dd9ed4'
-					},
-					body: JSON.stringify(azureMessageBody)
-				}, function(error, response, body2) {
-					if (error) {
-						console.log('error requesting classification: ', error)
-					} else if (response.body.error) {
-						console.log('Error: ', response.body.error)
-					} else { 
-						const responseObj2 = JSON.parse(body2);
-						console.log(responseObj2)
-						let tagList = []
-						let tags = responseObj2.tags
-						for (let tag of tags) {
-							tagList.push(tag.name)
-						}
-						for (let response of responseObj.responses) {
-							tagList.push(response.webDetection.webEntities[0].description)
-						}
-						//tagList.push(responseObj.responses[0].webDetection.webEntities[0].description)
-					}
-				})
-				
-			}
-		})
-	})
+// NOT DONE - AUSTIN
+function processForAirports(index) {
+  var array = fs.readFileSync('./image-scraper/atc.csv').toString().split('\r\n');
+  let airportTags = {};
+  let airport = array[index];
+  airport = airport.split(',');
+  if(airport[0]) {
+    console.log(`Scraping for ${airport[0]} - ${airport[1]}!`)
+    airportTags[airport[0]] = [];
+    processImages('./image-scraper/' + airport[0] + '/', airport[1]).then(() => {
+      processForAirports(index + 1)
+    });
+  }
 }
+
+function processImages(folder, name) {
+  var files = fs.readdirSync(folder);
+	files = files.slice(0, 25);
+  var filePromises = [];
+	
+  for(let file of files) {
+    filePromises.push(new Promise((resolve, reject) => {
+        var imageFile = fs.readFileSync(folder + file);
+        var encoded = new Buffer(imageFile).toString('base64');
+        processImage(encoded).then((result) => {
+					console.log('processed for ' + folder + file);
+          resolve(result);
+        });
+      })
+    )
+  }
+
+  return Promise.all(filePromises).then(result => {
+    return new Promise((resolve, reject) => {
+      let fullList = [];
+      for(let i of result) {
+        fullList = fullList.concat(i);
+      }
+
+      let results = `${name},"${fullList.join(',')}"\n`
+      console.log(results);
+
+      fs.appendFile('airport_tags.csv', results, function (err) {
+        if (err) throw err;
+        console.log(`Saved for ${name}!`);
+        resolve();
+      });
+    })
+  });
+};
+
+function processImage(file) {
+  const messageBody = {
+  "requests":[
+      {
+        "image":{
+          "content": file
+        },
+        "features":[
+          {
+            "type":"WEB_DETECTION",
+            "maxResults":10
+          }
+        ]
+      }]
+  }
+
+  return new Promise((resolve, reject) => {
+    request({
+      method: 'POST',
+      url: 'https://vision.googleapis.com/v1/images:annotate',
+      qs: {key: 'AIzaSyCGjy-IGHkLr1NAkunfshfX486rZxu9CCg'},
+      body: JSON.stringify(messageBody)
+    }, function(error, response, body) {
+			console.log('Got another image classification...');
+      if (error) {
+        console.log('error requesting classification: ', error)
+      } else if (response.body.error) {
+        console.log('Error: ', response.body.error)
+      } else {
+        const responseObj = JSON.parse(body);
+        //let azureMessageBody = {"url": imageURL}
+        let tagList = []
+        if(responseObj && responseObj.responses) {
+          for (let response of responseObj.responses) {
+            if(response.webDetection) {
+              for(let entity of response.webDetection.webEntities) {
+                if(entity.description) {
+                  tagList.push(entity.description);
+                }
+              }
+            }
+          }
+        } else {
+          resolve([]);
+        }
+
+        //console.log(list);
+        console.log(tagList);
+        resolve(tagList);
+        //console.log(tagList)
+      }
+    })
+  })
+}
+
+
+processForAirports(0)
+//processImages('./image-scraper/hello/');
