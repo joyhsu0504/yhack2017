@@ -17,14 +17,16 @@ import csv
 # search_keyword = ['aguadilla']
 # keywords = ['']
 # done = ['Aguadilla', 'Albany', 'Albuquerque', 'Atlanta', 'Austin', 'Baltimore', 'Bogota', 'Boston', 'Bridgetown', 'Buffalo', 'Burbank',
-            # 'Burlington', 'Camaguey', 'Cancun', 'Cartagena', 'Charleston', 'Charlotte', 'Charlotte Amalie, Harry S. Truman Airport', 'Chicago', 'Christiansted', 'Cleveland']
-# cities = ['Dallas-Fort Worth', 'Daytona Beach', 'Denver', 'Detroit', 'Fort Lauderdale', 'Fort Myers',
-            # 'Georgetown', 'Hamilton', 'Hartford', 'Havana', 'Holguin', 'Houston', 'Jacksonville', 'Kingston', 'La Romana', 'Las Vegas', 'Liberia',]
+            # 'Burlington', 'Camaguey', 'Cancun', 'Cartagena', 'Charleston', 'Charlotte', 'Charlotte Amalie, Harry S. Truman Airport', 'Chicago', 'Christiansted', 'Cleveland',
+            # 'Dallas-Fort Worth', 'Daytona Beach', 'Denver']
+# cities = ['Detroit', 'Fort Lauderdale', 'Fort Myers', 'Georgetown', 'Hamilton', 'Hartford',
+          # 'Havana', 'Holguin',
+# cities = ['Houston', 'Jacksonville', 'Kingston', 'La Romana', 'Las Vegas', 'Liberia',]
 
 # JASON UNCOMMENT THIS:
 # cities = ['Lima', 'Long Beach', 'Los Angeles', "Martha's Vineyard", 'Medelln', 'Mexico City', 'Montego Bay', 'Nantucket', 'Nashville',
-            # 'Nassau', 'New Orleans', 'New York', 'New York', 'Newark', 'Newburgh', 'Oakland', 'Oranjestad', 'Orlando', 'Palm Springs', 'Philadelphia',
-            # 'Phoenix', 'Pittsburgh', 'Ponce', 'Port of Spain', 'Port-au-Prince', 'Portland', 'Portland', 'Providence', 'Providenciales Island', 'Puerto Plata']
+            # 'Nassau', 'New Orleans', 'New York', 'New York', 'Newark', 'Newburgh', 'Oakland', 'Oranjestad', 'Orlando', 'Palm Springs',
+cities = ['Philadelphia', 'Phoenix', 'Pittsburgh', 'Ponce', 'Port of Spain', 'Port-au-Prince', 'Portland', 'Portland', 'Providence', 'Providenciales Island', 'Puerto Plata']
 
 # JOY UNCOMMENT THIS:
 # cities =  ['Punta Cana', 'Quito', 'Raleigh/Durham', 'Reno', 'Richmond', 'Rochester', 'Sacramento', "Saint George's", 'Saint Martin', 'Salt Lake City',
