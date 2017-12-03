@@ -1,0 +1,19 @@
+Notes:
+
+v.1.0
+Extension: Current version is standalone popup that takes in language and series
+of words, each delimited by a single comma. Works on a single webpage, will
+replace all instances of words with translation using Google Translate API.
+
+Known Bugs:
+1. Does not translate all instances, especially for certain words and DOM types
+2. Will sometimes throw a server error:
+The API returned an error: Error: The service is currently unavailable.
+(node:11040) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): TypeError: Cannot read property 'length' of undefined
+(node:11040) DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+Which leads to a token error with the API.
+3. Is served over http, rather than https
+
+Future Plans:
+1. Build website interface
+2. Integrate extension

@@ -1,0 +1,17 @@
+.selection_bubble {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #212121;
+  padding: 2.5px;
+  background-color: #fefefe;
+}
+
+.highlighted {
+  background-color: yellow !important;
+}
+
+.highlighted2 {
+  background-color: yellow !important;
+}
