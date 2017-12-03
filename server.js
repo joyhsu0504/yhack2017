@@ -11,6 +11,17 @@ app.use(cors());
 
 const joyUrl = process.env.JOY_URL || 'https://agile-retreat-91525.herokuapp.com/';
 
+let toggled = false;
+app.get('/toggled', (req, res) => {
+  res.send(toggled);
+});
+
+app.post('/toggled', (req, res) => {
+  toggled = !toggled;
+  res.send(toggled);
+});
+
+
 app.post('/travelInfo', (req, res, next) => {
   // lat long imageurl
   processImage(req.body.image)
