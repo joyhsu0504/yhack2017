@@ -1,5 +1,5 @@
 body {
-  width: 275px;
+  width: 225px;
   background-color: #fefefe;
   display: flex;
   flex-direction: column;
@@ -29,11 +29,19 @@ form {
   align-items: center;
 }
 
-.col {
+.doneLoad {
+  background-image: url('logoYhack.png');
+  background-size: cover;
+  width: 15px;
+  height: 15px;
+}
+
+.colll {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .row {
@@ -72,6 +80,12 @@ form {
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
+  /*margin-bottom: 25px;*/
+}
+
+.squashPlant {
+background-color: #63acff;
+
 }
 
 .slider:before {
@@ -86,6 +100,7 @@ form {
   transition: .4s;
 }
 
+
 input:checked + .slider {
   background-color: #63acff;
 }
@@ -94,7 +109,7 @@ input:focus + .slider {
   box-shadow: 0 0 1px #63acff;
 }
 
-input:checked + .slider:before { /* this will be in JAVASCRIPT */
+input:checked + .slider:before {
   -webkit-transform: translateX(20px);
   -ms-transform: translateX(20px);
   transform: translateX(20px);
@@ -119,10 +134,10 @@ input:checked + .slider:before { /* this will be in JAVASCRIPT */
 }
 
 .topBar {
-  background-color: #63acff;
+  background-color: #1F3C72;
   /*opacity: 0.5;*/
   width: 100vw;
-  height: 10px;
+  height: 20px;
   margin: 0px 0px;
   margin-bottom: -8px;
 }
@@ -164,10 +179,11 @@ input:checked + .slider:before { /* this will be in JAVASCRIPT */
 
 .title {
   font-family: 'Nunito', sans-serif;
-  font-size: 32.5px;
+  color: #1F3C72;
+  font-size: 24px;
   letter-spacing: 1px;
   margin: 0px 0px;
-  margin-bottom: -5px;
+  margin-bottom: 20px;
 }
 
 .add {
@@ -199,12 +215,12 @@ input:checked + .slider:before { /* this will be in JAVASCRIPT */
 }
 
 .favicon {
-  height: 50px;
-  width: 50px;
-  background-image: url('ImmerseFavicon.png');
+  height: 65px;
+  width: 65px;
+  background-image: url('logoYhack.png');
   background-size: cover;
-  margin-right: 15px;
-  /*margin-top: 15px;*/
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .bordered {

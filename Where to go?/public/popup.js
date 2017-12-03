@@ -6,18 +6,32 @@ function sendMessage(active, translatedWord, word) {
 }
 
 this.onChange = this.onChange.bind(this);
-this.isOn = false;
+this.on = false;
 
-function onChange() {
-  this.isOn = !this.isOn;
-  if (this.isOn) {
+async function onChange() {
+//  const fetchReq2 = await fetch('https://tranquil-headland-43776.herokuapp.com/toggled', {method: "POST"});
+  this.on = !this.on;
+  //console.log(this.on);
+  if (this.on) {
+    //document.querySelector('.slider').classList.add('squashPlant');
     sendMessage(true);
   }
   else {
+    //document.querySelector('.slider').classList.remove('squashPlant');
     sendMessage(false);
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+//TODO SLIDER/ THE THINGY DOESNT WORK
+
+document.addEventListener('DOMContentLoaded', async function() {
+  //const fetchReq = await fetch('https://tranquil-headland-43776.herokuapp.com/toggled', {method: "GET"});
+  //this.on = await fetchReq.json();
+  /*if (this.on) {
+    document.querySelector('.slider').classList.add('squashPlant');
+  }
+  else {
+    document.querySelector('.slider').classList.remove('squashPlant');
+  }*/
   document.querySelector('.onOrOff').addEventListener('change', () => onChange());
 });
