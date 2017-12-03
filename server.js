@@ -9,8 +9,7 @@ const app = express();
 app.use(bodyParser.json())
 app.use(cors());
 
-//const joyUrl = process.env.JOY_URL || 'https://evening-gorge-10099.herokuapp.com/';
-const joyUrl = 'http://localhost:5000/';
+const joyUrl = process.env.JOY_URL || 'https://agile-retreat-91525.herokuapp.com/';
 
 app.post('/travelInfo', (req, res, next) => {
   // lat long imageurl
