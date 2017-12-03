@@ -9,20 +9,24 @@ const app = express();
 app.use(bodyParser.json())
 app.use(cors());
 
-//const joyUrl = process.env.JOY_URL || 'https://'
+//const joyUrl = process.env.JOY_URL || 'https://evening-gorge-10099.herokuapp.com/';
+const joyUrl = 'http://localhost:5000/';
+
 app.post('/travelInfo', (req, res, next) => {
   // lat long imageurl
   processImage(req.body.image)
     .then(tagList => {
-      console.log(tagList);
-      //return axios.post(joyUrl, {
-        //latitude: req.body.latitude,
-        //longitude: req.body.longitude,
-        //tag_list: tagList
-      //})
-    //}).then(joyResponse => {
-      //res.send(joyResponse);
-    });
+      return axios.post(joyUrl + 'jetblue/api/get_deal', {
+        lat: req.body.latitude,
+        lon: req.body.longitude,
+        entities: tagList
+      })
+    }).then(joyResponse => {
+      console.log(joyResponse);
+      res.send(joyResponse.data);
+    }).catch(err => {
+      console.log(err);
+    })
 });
 
 app.listen(process.env.PORT || 5000, () => {

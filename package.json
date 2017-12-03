@@ -1,4 +1,11 @@
 {
+  "name": "lol",
+  "version": "1.0.0",
+  "description": "This example is so cool.",
+  "main": "node server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "asyncawait": "^1.0.6",
     "axios": "^0.17.1",
@@ -9,5 +16,8 @@
     "request": "^2.83.0",
     "save-pixels": "^2.3.4",
     "shortid": "^2.2.8"
+  },
+  "engines": {
+    "node": "8.4.0"
   }
 }
