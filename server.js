@@ -13,7 +13,7 @@ app.use(cors());
 
 const joyUrl = process.env.JOY_URL || 'https://agile-retreat-91525.herokuapp.com/';
 //const joyUrl = 'http://localhost:5000/';
-const reactUrl = 'https://afternoon-brook-79597.herokuapp.com/';
+const reactUrl = 'afternoon-brook-79597.herokuapp.com/';
 
 let toggled = false;
 
