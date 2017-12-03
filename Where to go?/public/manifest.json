@@ -20,7 +20,10 @@
     "scripts": ["background.js"]
   },
   "icons": {
-    "128": "ImmerseFavicon.png"
+    "128": "logoYhack.png"
   },
+  "web_accessible_resources": [
+    "logoYhack.png"
+  ],
   "manifest_version": 2
 }

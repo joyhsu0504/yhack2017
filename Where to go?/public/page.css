@@ -1,5 +1,5 @@
 body {
-  width: 275px;
+  width: 225px;
   background-color: #fefefe;
   display: flex;
   flex-direction: column;
@@ -29,11 +29,18 @@ form {
   align-items: center;
 }
 
+.doneLoad {
+  background-image: url('logoYhack.png');
+  background-size: cover;
+  width: 15px;
+  height: 15px;
+}
+
 .col {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
+  align-items: center;
 }
 
 .row {
@@ -119,10 +126,10 @@ input:checked + .slider:before { /* this will be in JAVASCRIPT */
 }
 
 .topBar {
-  background-color: #63acff;
+  background-color: #1F3C72;
   /*opacity: 0.5;*/
   width: 100vw;
-  height: 10px;
+  height: 20px;
   margin: 0px 0px;
   margin-bottom: -8px;
 }
@@ -199,12 +206,12 @@ input:checked + .slider:before { /* this will be in JAVASCRIPT */
 }
 
 .favicon {
-  height: 50px;
-  width: 50px;
-  background-image: url('ImmerseFavicon.png');
+  height: 65px;
+  width: 65px;
+  background-image: url('logoYhack.png');
   background-size: cover;
-  margin-right: 15px;
-  /*margin-top: 15px;*/
+  margin-top: 25px;
+  margin-bottom: 15px;
 }
 
 .bordered {
