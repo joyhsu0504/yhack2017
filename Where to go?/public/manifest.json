@@ -1,7 +1,7 @@
 {
-  "name": "Immersion",
+  "name": "Envision",
   "version": "1.0",
-  "description": "Google Chrome Extension that allows user to define a set of words which will be replaced with translations to a chosen language.",
+  "description": "Google Chrome Extension that processes images that appear on the web to recommend cheap flights to users",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -13,7 +13,7 @@
     "<all_urls>"
   ],
   "browser_action": {
-  "default_title": "Immersion",
+  "default_title": "Envision",
   "default_popup": "popup.html"
   },
   "background": {
