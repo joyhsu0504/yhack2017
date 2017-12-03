@@ -11,8 +11,8 @@ const app = express();
 app.use(bodyParser.json())
 app.use(cors());
 
-//const joyUrl = process.env.JOY_URL || 'https://agile-retreat-91525.herokuapp.com/';
-const joyUrl = 'http://localhost:5000/';
+const joyUrl = process.env.JOY_URL || 'https://agile-retreat-91525.herokuapp.com/';
+//const joyUrl = 'http://localhost:5000/';
 const reactUrl = 'http://react';
 
 let toggled = false;
