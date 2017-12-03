@@ -41,7 +41,6 @@ module.exports = {
           qs: {key: 'AIzaSyCGjy-IGHkLr1NAkunfshfX486rZxu9CCg'},
           body: JSON.stringify(messageBody)
         }, function(error, response, body) {
-          console.log(body);
           if (error) {
             console.log('error requesting classification: ', error)
           } else if (response.body.error) {

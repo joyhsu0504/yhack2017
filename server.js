@@ -13,7 +13,7 @@ app.use(cors());
 
 const joyUrl = process.env.JOY_URL || 'https://agile-retreat-91525.herokuapp.com/';
 //const joyUrl = 'http://localhost:5000/';
-const reactUrl = 'http://react';
+const reactUrl = 'https://afternoon-brook-79597.herokuapp.com/';
 
 let toggled = false;
 
@@ -42,7 +42,7 @@ app.post('/toggled', (req, res) => {
 
 app.post('/getPhotos', (req, res) => {
   let entities = req.body.entities.split(',')
-
+  console.log(joyUrl + 'jetblue/api/get_photos');
   axios.post(joyUrl + 'jetblue/api/get_photos', {
     lat: req.body.lat,
     lon: req.body.lon,
@@ -50,20 +50,24 @@ app.post('/getPhotos', (req, res) => {
   }).then(resp => {
     res.send(resp.data);
   }).catch(err => {
-    //console.log(err);
+    console.log(err);
   })
 })
 
 app.post('/getDeals', (req, res) => {
-  let entities = req.body.entities.split(',')
+  console.log(req.body.entities);
+  let entities = req.body.entities.split(',');
   axios.post(joyUrl + 'jetblue/api/get_deal', {
     lat: req.body.lat,
     lon: req.body.lon,
-    entities: req.body.entities
+    entities: entities
   }).then(resp => {
-    res.send(resp)
+
+    res.send(Object.assign(resp.data, {
+      city: getLocationFromAirportCode(resp.data.DestinationAirportCode),
+    }));
   }).catch(err => {
-    //console.log(err);
+    console.log(err);
   })
 });
 
