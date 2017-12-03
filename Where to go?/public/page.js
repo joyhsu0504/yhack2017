@@ -60,31 +60,11 @@ bubbleDOM.appendChild(column);
   price.id = "price";
   column.appendChild(price);
 
-  var button = document.createElement('div');
+  var button = document.createElement('a');
   button.setAttribute('class', 'daddy mommy');
   button.textContent = "Check it out!";
   button.id = "buttonPress";
   column.appendChild(button);
-
-function renderLoading() {}
-
-/*  background-image: url('logoYhack.png');
-  background-size: cover;
-  width: 15px;
-  height: 15px;*/
-
-function renderDone(mouseX, mouseY) { //TODO FIX THIS
-  /*var bubbleDone = document.createElement('div');
-  bubbleDone.style.backgroundImage = chrome.extension.getURL("logoYhack.png");
-  bubbleDone.style.width = '50px';
-  bubbleDone.style.height = '50px';
-  bubbleDone.style.backgroundSize = 'cover';
-  bubbleDone.setAttribute('class', 'doNotPropagate');
-  document.body.appendChild(bubbleDone);
-  bubbleDone.style.top = mouseY + 'px';
-  bubbleDone.style.left = mouseX + 'px';
-  bubbleDone.style.visibility = 'visible';*/
-}
 
 function renderBubble(mouseX, mouseY, json) {
   var long = 'Recommended Trip: ' + json.DestinationAirportCode + '. From ' + json.OriginAirportCode + ' to ' + json.DestinationAirportCode + '. Price: $' + (parseFloat(json.FareDollarAmount) + parseFloat(json.TaxDollarAmount)).toFixed(2) + '. Points: ' + (parseFloat(json.FarePointsAmount) + parseFloat(json.TaxPointsAmount)).toFixed(2);
@@ -93,7 +73,9 @@ function renderBubble(mouseX, mouseY, json) {
   document.querySelector('#from').textContent = json.OriginAirportCode;
   document.querySelector('#to').textContent = json.DestinationAirportCode;
   document.querySelector('#price').textContent = "Flights from $" + (parseFloat(json.FareDollarAmount) + parseFloat(json.TaxDollarAmount)).toFixed(2) + "/" + (parseFloat(json.FarePointsAmount) + parseFloat(json.TaxPointsAmount)).toFixed(2) + "points";
-  //bubbleDOM.textContent = long;
+  var mod = document.querySelector('#buttonPress');
+  mod.href = "http://" + json.reactUrl;
+
   mouseX = mouseX + 5; //TODO CHANGE BACK AFTER TESTING------------------
   bubbleDOM.style.top = mouseY + 'px';
   bubbleDOM.style.left = mouseX + 'px';
@@ -162,26 +144,23 @@ async function queryBackend(imageURL, node) {
   console.log(jsonObject);
   const sendLocationAndImage = await fetch('https://tranquil-headland-43776.herokuapp.com/travelInfo', request); //sends the image and coords //TODO populate the URL
   const finishSending = await sendLocationAndImage.json(); //gets back json with origin airport etc.
-  //const finishSending = {DestinationAirportCode: "HOU",
-//FareDollarAmount: 130.2, FarePointsAmount: 8600, FareType: "POINTS", FinalScore: 801.83, FlightType: "NONSTOP", OriginAirportCode: "JFK", TaxDollarAmount: 22.29, TaxPointsAmount: 5.6};
   console.log(finishSending);
   createInteractiveImageModal(node, finishSending);
-  renderDone(getOffset(node).left + node.offsetWidth, getOffset(node).top); //TODO MAKE SURE AFTER
 }
 
 function createInteractiveImageModal(newNode1, json) {
   newNode1.addEventListener('mouseenter', function() {
     if (currNode1 != "" ) currNode1.classList.remove('highlighted2');
     newNode1.style = "outline: 2.5px solid #4891CE";
-    //newNode1.classList.add('highlighted2');
     currNode1 = newNode1;
     renderBubble(getOffset(newNode1).left + newNode1.offsetWidth, getOffset(newNode1).top, json);
   });
   newNode1.addEventListener('mouseleave', function() {
-    if (currNode1 != "" ) currNode1.classList.remove('highlighted2');
-    newNode1.style = "outline: 0px";
-    //newNode1.classList.remove('highlighted2');
-    unrenderBubble(getOffset(newNode1).left + newNode1.offsetWidth, getOffset(newNode1).top);
+    setTimeout(function() {
+      if (currNode1 != "" ) currNode1.classList.remove('highlighted2');
+      newNode1.style = "outline: 0px";
+      unrenderBubble(getOffset(newNode1).left + newNode1.offsetWidth, getOffset(newNode1).top);
+    }, 4200);
   });
 }
 

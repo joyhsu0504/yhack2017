@@ -47,6 +47,10 @@
   border-radius: 15px;
 }
 
+.daddy:hover {
+  cursor: pointer;
+}
+
 .mommy {
   font-family: 'Nunito', sans-serif;
   color: #1F3C72;
